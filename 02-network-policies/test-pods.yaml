@@ -1,0 +1,29 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+  namespace: k8s-hardening
+  labels:
+    app: frontend
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.27
+      ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend
+  namespace: k8s-hardening
+  labels:
+    app: backend
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.27
+      ports:
+        - containerPort: 80
+

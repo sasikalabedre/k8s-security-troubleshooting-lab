@@ -1,0 +1,13 @@
+# Environment files
+.env
+.env.*
+
+# Local secret files
+*.secret
+*-secret.yaml
+secrets/
+
+# Credential and key files
+*.pem
+*.key
+credentials.json

@@ -1,0 +1,32 @@
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+  - level: Metadata
+    verbs:
+      - create
+      - update
+      - patch
+      - delete
+    resources:
+      - group: ""
+        resources:
+          - pods
+          - secrets
+          - configmaps
+          - services
+      - group: apps
+        resources:
+          - deployments
+          - replicasets
+
+  - level: Metadata
+    resources:
+      - group: ""
+        resources:
+          - namespaces
+
+  - level: None
+    users:
+      - system:kube-proxy
+    verbs:
+      - watch
