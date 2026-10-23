@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: troubleshooting-web
+  namespace: k8s-hardening
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: troubleshooting-web
+  template:
+    metadata:
+      labels:
+        app: troubleshooting-web
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.27
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: troubleshooting-web-service
+  namespace: k8s-hardening
+spec:
+  selector:
+    app: troubleshooting-web
+  ports:
+    - port: 80
+      targetPort: 8080
