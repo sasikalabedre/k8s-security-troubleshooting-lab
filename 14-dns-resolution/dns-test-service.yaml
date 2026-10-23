@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dns-test-service
+  namespace: k8s-hardening
+spec:
+  selector:
+    app: dns-test
+  ports:
+    - port: 80
+      targetPort: 8080
