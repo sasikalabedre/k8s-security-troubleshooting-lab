@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-503-demo
+  namespace: k8s-hardening
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-503-demo
+  template:
+    metadata:
+      labels:
+        app: web-503-demo
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          image: nginxinc/nginx-unprivileged:1.27
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-503-service
+  namespace: k8s-hardening
+spec:
+  selector:
+    app: web-503-demo
+  ports:
+    - port: 80
+      targetPort: 8080
+
